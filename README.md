@@ -32,25 +32,18 @@ By introducing a Dynamic Resource Management System, and dynamically packaging s
 # Getting started
 ## 1.Compile and import plugin
 
-1. Include dynamic_plugin in settings.gradle
+1. Add dependencies to the module
 
-   `include ':dynamic_plugin'`
+   `classpath 'cn.huolala:dynamic_res_core:1.1.1'`
 
-2. Build dynamic_plugin module
+2. Add dynamic_res_plugin as a dependency in your main build.gradle in the root of your project
 
-3. Upload or uploadArchives dynamic_plugin module 
+   `classpath 'cn.huolala:dynamic_res_plugin:1.1.1'`
 
-4. Add local maven as a repository in your main build.gradle in the root of your project
-
-   `maven {url uri('./dynamic_plugin_repo')}`
-
-5. Add dynamic_plugin as a dependency in your main build.gradle in the root of your project
-
-   `classpath 'com.lalamove.dynamic_plugin:dynamic_res_plugin:1.0.0'`
-
-6. Then you need to "apply" the plugin and add dependencies by adding the following lines to your app/build.gradle.
+3.  Then you need to "apply" the plugin and add dependencies by adding the following lines to your app/build.gradle.
 
    `apply plugin: 'com.lalamove.dynamic_res_plugin'`
+
 
 ## 2.Import config
 

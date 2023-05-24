@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mFontTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DynamicResManager.getInstance().setTypeface(mFontTv, DynamicResConst.TypeFace.TG_TYPE_REGULAR);
+                DynamicResManager.getInstance().setTypeface(mFontTv, DynamicResConst.TypeFace.JETBRAINSMONO_BOLDITALIC);
             }
         });
         mAnimTv.setOnClickListener(new View.OnClickListener() {

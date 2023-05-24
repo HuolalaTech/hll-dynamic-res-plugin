@@ -29,7 +29,7 @@ android {
 
 dependencies {
     if (depMavenAar){
-        api "com.lalamove.huolala:dynamic_res_base:$maven_base_version"
+        api "cn.huolala:dynamic_res_base:$maven_base_version"
     }else {
         api project(':dynamic_res_base')
     }
