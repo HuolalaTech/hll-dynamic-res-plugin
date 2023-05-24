@@ -1,0 +1,5 @@
+include ':sample_app'
+include ':dynamic_res_base'
+include ':dynamic_res_core'
+include ':sample_native_lib'
+include ':dynamic_res_plugin'

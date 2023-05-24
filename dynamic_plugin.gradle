@@ -1,0 +1,218 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+def createOrGetSubPath(String path, String name) {
+    //创建dst根目录
+    def dstPath = "${path}/${name}"
+    def dstFile = file(dstPath)
+
+    if (!dstFile.exists()) {
+        //如果路径不存在,则创建
+        dstFile.mkdir()
+    } else if (dstFile.isFile()) {
+        //如果路径存在，且是文件类型，说明我们命名出现问题，返回空字符串
+        dstPath = ''
+    }
+    return dstPath
+}
+
+def createOrGetRootPath() {
+    def rootPath = createOrGetSubPath("${rootProject.rootDir}", "dynamic_res_store")
+    return rootPath
+}
+
+def deleteRootPath() {
+    def rootPath = createOrGetRootPath()
+    def rootFile = file(rootPath)
+    rootFile.deleteDir()
+}
+
+def createOrGetOutputPath() {
+    def rootPath = createOrGetRootPath()
+    return createOrGetSubPath(rootPath, "output")
+}
+
+def createOrGetInputPath() {
+    def rootPath = createOrGetRootPath()
+    return createOrGetSubPath(rootPath, "input")
+
+}
+
+def createOrGetInputTypeFacePath() {
+    //创建字体文件输入目录
+    def inputPath = createOrGetInputPath()
+    return createOrGetSubPath(inputPath, "typeface")
+}
+
+def createOrGetInputFrameAnimPath() {
+    //创建帧动画文件输入目录
+    def inputPath = createOrGetInputPath()
+    return createOrGetSubPath(inputPath, "frame_anim")
+}
+
+def createOrGetInputSoPath() {
+    //创建so文件输入目录
+    def inputPath = createOrGetInputPath()
+    return createOrGetSubPath(inputPath, "so")
+}
+
+def createOrGetInputZipPath() {
+    //插件自定义zip包输入目录
+    def inputPath = createOrGetInputPath()
+    return createOrGetSubPath(inputPath, "zip")
+}
+
+def createOrGetInputSinglePath() {
+    //创建自定义单个文件输入目录
+    def inputPath = createOrGetInputPath()
+    return createOrGetSubPath(inputPath, "single")
+}
+
+boolean isReleaseBuildType() {
+    for (String s : gradle.startParameter.taskNames) {
+        println("isReleaseBuildType name "+s)
+        if (s.contains("Release") | s.contains("release")) {
+            return true
+        }
+    }
+    return false
+}
+
+
+ext {
+    dynamic_config = [
+            //是否执行替换System.loadlibrary操作
+            is_replace_load_library: true,
+            //是否执行替换System.load操作
+            is_replace_load        : true,
+            //是否执行删除so文件操作
+            is_delete_so           : true,
+            //是否执行将so文件拷贝到其他目录操作
+            is_copy_so             : true,
+            //是否执行将动态资源打包，并生成java文件操作
+            is_zip_res             : true,
+            //是否执行将so文件打包，并生成java文件操作
+            is_zip_so              : true,
+            //是否自动上传所有资源，上传方法为dynamic_upload
+            is_upload_res          : false,
+            //插件是否工作在Release模式下
+            is_release_type : isReleaseBuildType(),
+            //是否打印debug日志
+            is_debug_log : true,
+            //自动创建java文件时的包名 DynamicResConst类的包名
+            create_java_pkg_name   : 'com.lalamove.huolala',
+
+    ]
+
+    /**
+     * 配置要删除和拷贝的so文件
+     * map的key为压缩包名称，值为压缩包包含的so文件列表
+     * key为debug_all_test时，会压缩所有so包
+     *
+     * 1.dynamic_scan_so_map = [ demoSo : ['libnativelib.so,libdynamiclib.so'], ]
+     * 2.ignore_so_files: ["libmmkv.so"],本项目中
+     * 1、2等效
+     */
+    dynamic_scan_so_map = [
+            demoSo : ['libdynamiclib.so'],
+    ]
+
+    dynamic_so_config = [
+            //so文件忽略列表，该表中的文件，不会被扫描。不在该列表中的文件都会被扫描
+            // (dynamic_scan_so_map为空时，本列表才生效)
+            ignore_so_files: ["libmmkv.so"],
+            //so文件扫描abi目录，不在该目录下的so将不被扫描
+            scan_so_abis   : ["arm64-v8a", "armeabi-v7a"],
+            //拷贝出来的so文件夹前缀,ignore_so_files生效时使用,生成hll_armeabi-v7a_so.zip,hll_arm64-v8a_so.zip
+            so_input_prefix: 'demoSo',
+    ]
+
+    dynamic_lib_list = [
+            //只有该列表中的包名，才会执行替换System.loadlibrary操作
+            //输入debug_all_test，则会替换所有System.loadLibrary方法，用于测试
+            scan_load_library_pkgs  : [],
+            //在该列表中的包名或者类名，不会执行替换System.loadlibrary操作,和上面的配置可以同时生效
+            ignore_load_library_pkgs: [],
+    ]
+
+    //该配置不要改动内容，需要改变路径的，直接改变对应的方法内容即可
+    dynamic_dir = [
+            //产生文件的输出目录
+            output          : createOrGetOutputPath(),
+            //字体资源输入目录
+            typeface_input  : createOrGetInputTypeFacePath(),
+            //帧动画资源输入目录
+            frame_anim_input: createOrGetInputFrameAnimPath(),
+            //so文件资源输入目录
+            so_input        : createOrGetInputSoPath(),
+            //自定义zip包输入目录
+            zip_input       : createOrGetInputZipPath(),
+            //自定义单个文件输入目录
+            single_input    : createOrGetInputSinglePath()
+    ]
+
+    //该配置项，配置了android 2个gradle task的名称
+    //主工程的mergeNativeLibs合并所有依赖的 native 库
+    //主工程的stripDebugSymbols从 Native 库中移除 Debug 符号。
+    dynamic_task = [
+            //自定义的task运行哪里
+            //true为mergeNativeLibs之后，stripDebugSymbols之前
+            //false为stripDebugSymbols之后,package之前
+            //strip可能导致不同as版本得到的so文件md5码不相同。
+            isTaskRunAfterMerge : true,
+            //debug状态下,mergeNativeLibs的task名称
+            debugMergeNativeLibs    : "mergeDebugNativeLibs",
+            //release状态下,mergeNativeLibs的task名称
+            releaseMergeNativeLibs  : "mergeReleaseNativeLibs",
+            //debug状态下,stripDebugSymbols的task名称
+            debugStripDebugSymbols  : "stripDebugDebugSymbols",
+            //release状态下,stripDebugSymbols的task名称
+            releaseStripDebugSymbols: "stripReleaseDebugSymbols",
+            //debug状态下，系统打包task名称
+            debugPackage : "packageDebug",
+            //release状态下，系统打包task名称
+            releasePackage : "packageRelease",
+            //debug状态下,mergeNativeLibs的输出目录
+            debugNativeOutputPath   : "${projectDir}/sample_app/build/intermediates/merged_native_libs/debug/out/lib",
+            //release状态下,mergeNativeLibs的输出目录
+            releaseNativeOutputPath : "${projectDir}/sample_app/build/intermediates/merged_native_libs/release/out/lib",
+            //debug状态下，,stripDebugSymbols的输出目录
+            debugStripOutputPath : "${projectDir}/sample_app/build/intermediates/stripped_native_libs/debug/out/lib",
+            //release状态下，,stripDebugSymbols的输出目录
+            releaseStripOutputPath : "${projectDir}/sample_app/build/intermediates/stripped_native_libs/release/out/lib",
+    ]
+    //该闭包可以自动将文件上传到服务器，参数列表为资源id，资源文件路径
+    //我们可以再次执行上传服务器操作，并返回对应的url。
+    //当然也可以不实现上传操作，并自己手动上传资源。
+    dynamic_upload = {
+        id, path ->
+            println("dynamic_upload id ${id} ,path ${path}")
+            return 'http://url'
+    }
+}
+
+
+
+
+/**
+ * 删除并重建动态资源目录
+ */
+task clearAndCreateDir {
+    doLast {
+        //删除根目录
+        deleteRootPath()
+        //插件output输出目录
+        createOrGetOutputPath()
+        //创建字体输入目录
+        createOrGetInputTypeFacePath()
+        //创建帧动画输入目录
+        createOrGetInputFrameAnimPath()
+        //创建so包输入目录
+        createOrGetInputSoPath()
+        //创建zip包输入目录
+        createOrGetInputZipPath()
+    }
+}
+
+
+
+
+

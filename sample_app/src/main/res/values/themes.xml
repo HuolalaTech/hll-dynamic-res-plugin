@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Dynamic_plugin" parent="@style/Theme.AppCompat">
+
+    </style>
+
+
+</resources>

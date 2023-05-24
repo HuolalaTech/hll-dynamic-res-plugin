@@ -1,0 +1,39 @@
+plugins {
+    id 'com.android.application'
+}
+apply plugin: 'com.lalamove.huolala.dynamic_res_plugin'
+
+android {
+    compileSdkVersion Integer.parseInt(COMPILE_SDK_VERSION)
+    buildToolsVersion BUILDTOOLS_VERSION
+    defaultConfig {
+        applicationId "com.lalamove.huolala.lib_dynamic_plugin"
+        minSdkVersion Integer.parseInt(MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "com.getkeepsafe.relinker:relinker:1.4.1"
+    api project(':sample_native_lib')
+    if (depMavenAar){
+        api "com.lalamove.huolala:dynamic_core:$maven_res_version"
+    }else {
+        api project(':dynamic_res_core')
+    }
+}

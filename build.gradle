@@ -1,0 +1,40 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dynamic_plugin.gradle'
+buildscript {
+    Properties properties = new Properties()
+    InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+    properties.load(inputStream)
+    //local.properties 中增加depMavenAar=false 本地编译不实用maven
+    ext.depMavenAar = properties.getProperty("depMavenAar") ?properties.getProperty("depMavenAar").toBoolean(): true
+
+    repositories {
+        // huolala   新Maven URL地址
+        maven { url 'http://maven.huolala.cn/repository/maven-public'}
+        // Maven URL地址
+        maven { url 'http://maven.huolala.cn/repository/HuolalaComponet/' }
+        maven { url maven_repository_url}
+        google()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.2"
+        classpath "com.lalamove.huolala:dynamic_res_plugin:1.1.2"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url maven_repository_url}
+        google()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

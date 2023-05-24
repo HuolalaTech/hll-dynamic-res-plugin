@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+dependencies {
+    implementation "androidx.annotation:annotation:1.2.0"
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(maven_repository_url)) {
+                authentication(userName: maven_user_name, password: maven_password)
+            }
+            pom.groupId = maven_group_id
+            pom.artifactId = maven_base_artifact_id
+            pom.version = maven_base_version
+        }
+    }
+}
