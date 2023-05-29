@@ -32,25 +32,16 @@
 
 # 使用介绍
 ## 1.编译和引入插件
+1. 模块中添加依赖
+   
+   `classpath 'cn.huolala:dynamic_res_core:1.1.2'`
 
-1. settings.gradle里面添加
+2. 主目录下，build.gradle里面添加依赖
+   
+   `classpath 'cn.huolala:dynamic_res_plugin:1.1.2'`
 
-   `include ':dynamic_plugin'`
-
-2. dynamic_plugin模块,执行build
-
-3. dynamic_plugin模块,执行upload/uploadArchives
-
-4. 主目录下，build.gradle里面添加
-
-   `maven {url uri('./dynamic_plugin_repo')}`
-
-5. 主目录下，build.gradle里面添加
-
-   `classpath 'com.lalamove.dynamic_plugin:dynamic_res_plugin:1.0.0'`
-
-6. app/build.gradle里面添加
-
+3. app/build.gradle里面添加
+   
    `apply plugin: 'com.lalamove.dynamic_res_plugin'`
 
 ## 2.增加gradle配置
