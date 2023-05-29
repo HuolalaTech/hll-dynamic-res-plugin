@@ -1,4 +1,4 @@
-apply plugin: 'groovy'
+apply plugin: 'java'
 apply plugin: 'maven'
 
 dependencies {
@@ -12,7 +12,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:7.2'
     implementation 'com.android.tools.build:gradle:3.6.4'
     implementation 'com.squareup:javapoet:1.13.0'
-    implementation "com.lalamove.huolala:dynamic_res_base:$maven_base_version"
+    implementation "cn.huolala:dynamic_res_base:$maven_base_version"
 }
 
 uploadArchives {
