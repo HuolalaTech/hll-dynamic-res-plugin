@@ -1,6 +1,9 @@
 <img src=assets/title.png width=100% height=100% />
 
 [![license](https://img.shields.io/hexpm/l/plug.svg)](https://www.apache.org/licenses/LICENSE-2.0) ![release](https://img.shields.io/badge/release-v1.0.0-green.svg) ![Platform](https://img.shields.io/badge/platform-android-blue.svg) ![API](https://img.shields.io/badge/API-21-green.svg)
+
+[中文文档](README_CN.md)
+
 # Dynamic Plugin
 
 As the company's business expands, the size of the App has also been increasing. Significant effects have been achieved through the past several App optimization optimizations. Conventional methods are now insufficient to reduce the size of the App any further. After analyzing the App, we found that some resources that are not frequently used and can be delivered, so we designed this SDK for dynamic resource loading.
@@ -139,7 +142,7 @@ learn more at the sample MainActivity.java
 
 ## Author
 
-   [HUOLALA mobile technology team](https://juejin.cn/user/1768489241815070)
+   [HUOLALA mobile technology team](https://juejin.cn/post/7238627611265613882)
 
 ## License
 
