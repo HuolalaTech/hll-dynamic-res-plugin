@@ -133,7 +133,7 @@ IoThreadPool.getInstance().getThreadPoolExecutor().execute(() -> {
 
 ## 技术博客
 
-[货拉拉 Android 动态资源管理系统原理与实践](https://juejin.cn/post/7113703128733581342)
+[货拉拉 Android 动态资源管理系统原理与实践](https://juejin.cn/post/7238627611265613882)
 
 ## 作者
 
