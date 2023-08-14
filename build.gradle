@@ -5,7 +5,7 @@ buildscript {
     InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
     properties.load(inputStream)
     //local.properties 中增加depMavenAar=false 本地编译不实用maven
-    ext.depMavenAar = properties.getProperty("depMavenAar") ?properties.getProperty("depMavenAar").toBoolean(): true
+    ext.depMavenAar = properties.getProperty("depMavenAar") ? properties.getProperty("depMavenAar").toBoolean() : true
 
     repositories {
         google()
