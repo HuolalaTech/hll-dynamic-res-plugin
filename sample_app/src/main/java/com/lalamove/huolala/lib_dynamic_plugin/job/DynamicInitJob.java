@@ -38,7 +38,7 @@ public class DynamicInitJob implements AbsBaseJob {
         DynamicConfig config = DynamicConfig.Builder.with(context)
                 .executor(CpuThreadPool.getInstance().getThreadPoolExecutor())
                 .loadSoManager(createLoadSoManager())
-                .downlader(new IDownLoaderProvider() {
+                .downloader(new IDownLoaderProvider() {
                     @Override
                     public IDownloader getDownloader() {
                         return new DefaultDownloader(context);
