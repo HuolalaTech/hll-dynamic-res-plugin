@@ -166,7 +166,7 @@ public class DynamicConfig {
             return this;
         }
 
-        public Builder downlader(IDownLoaderProvider loader) {
+        public Builder downloader(IDownLoaderProvider loader) {
             this.mDownloadProvider = loader;
             return this;
         }

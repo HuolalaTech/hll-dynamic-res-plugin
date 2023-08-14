@@ -77,7 +77,7 @@
 DynamicConfig config = DynamicConfig.Builder.with(context)
         .executor()
         .loadSoManager(createLoadSoManager())
-        .downlader()
+        .downloader()
         .debugLog(BuildConfig.DEBUG)
         .loggger()
         .monitor()
